@@ -26,7 +26,7 @@ public class App {
         }
 
         // welcome message
-        System.out.println("Welcome to your shopping cart. It will be saved in directory " + dirPath + ".");
+        System.out.println("Welcome to your shopping cart in the " + dirPath + " directory.");
         System.out.println("Please type a command. You may type 'help' if you need a list of commands.");
 
         // terminal input
@@ -58,22 +58,23 @@ public class App {
                 // tell system that you are logged in
                 loggedIn = true;
                 
+                // find out user
+                user = scan.next();
+
                 // instantiate shopping list if not yet instantiated
                 if (newShoppingList == true) {
                     shoppingList = new ArrayList<String>();
                     newShoppingList = false;
                 }
-                
-                // find out user and welcome message
-                user = scan.next();
-                System.out.print(user + ", your cart ");
 
-                // find out if user file exists
-                File userFile = new File(user + File.separator + dirPath);
+                // 1. find out if user file exists
+                File userFile = new File(dirPath + File.separator + user + ".txt");
+                System.out.println("Your user file name is " + dirPath + File.separator + user);
 
-                // if user exists, update the shopping list
+                // 2a. if user exists, update the shopping list
                 if (userFile.exists()) {
-                    
+                    System.out.println("Welcome back, " + user);
+
                     // use file reader to fill up shopping cart list
                     FileReader fr = new FileReader(userFile);
                     BufferedReader br = new BufferedReader(fr);
@@ -86,13 +87,13 @@ public class App {
                     br.close();
                     fr.close();
 
-                    
-                    // if the user does not exist
+                    // 2b. if the user does not exist
                 } else {
+                    System.out.println("Nice to meet you, " + user);
                     userFile.createNewFile();
-                   
                 }
 
+                // 3. print out shopping list details
                 // if the size of the shopping list is more than 0
                 if (shoppingList.size() > 0) {
                     System.out.println(user + ", your cart contains the following items");
