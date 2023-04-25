@@ -1,0 +1,5 @@
+apple
+pear
+soap
+sponge
+orange
