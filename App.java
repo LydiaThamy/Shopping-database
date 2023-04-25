@@ -1,11 +1,14 @@
 package sg.edu.nus.iss;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) {
+        
+        // directory path
         String dirPath;
         
         if (args.length == 0) {
@@ -14,19 +17,23 @@ public class App {
             dirPath = args[0];
         }
         
-        System.out.println("Welcome to your shopping cart");
-        System.out.println("It will be saved in " + dirPath);
+        File directory = new File (dirPath);
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+
+        // welcome message
+        System.out.println("Welcome to your shopping cart. It will be saved in directory " + dirPath + ".");
         System.out.println("Please type a command. You may type 'help' if you need a list of commands.");
 
+        // terminal input
         String input = "";
-        List<String> shoppingList = new ArrayList<>();
-
-        // Console con = System.console();
         Scanner scan = new Scanner(System.in);
+ 
+        List<String> shoppingList = new ArrayList<>();
 
         // done function
         while (!input.equals("end")) {
-            // input = con.readLine();
             input = scan.next();
 
             // help function
@@ -35,6 +42,11 @@ public class App {
                 System.out.println("Type 'add (item 1, item 2, etc...)' to add items into your shopping cart");
                 System.out.println("Type 'delete (index of item)' to delete an item in your shopping cart");
                 System.out.println("Type 'end' to finish editing your shopping cart");
+            }
+
+            // login function
+            if (input.equals("login")) {
+                File user = new File(input);
             }
 
             // list function
