@@ -1,12 +1,15 @@
 package sg.edu.nus.iss;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         
         // directory path
         String dirPath;
@@ -30,7 +33,13 @@ public class App {
         String input = "";
         Scanner scan = new Scanner(System.in);
  
-        List<String> shoppingList = new ArrayList<>();
+        // only instantiate the shopping list once a user logs in or adds something to the cart
+        List<String> shoppingList = null;
+
+        // checkers
+        String user;
+        boolean loggedIn = false;
+        boolean newShoppingList = true;
 
         // done function
         while (!input.equals("end")) {
@@ -46,14 +55,62 @@ public class App {
 
             // login function
             if (input.equals("login")) {
-                File user = new File(input);
+                // tell system that you are logged in
+                loggedIn = true;
+                
+                // instantiate shopping list if not yet instantiated
+                if (newShoppingList == true) {
+                    shoppingList = new ArrayList<String>();
+                    newShoppingList = false;
+                }
+                
+                // find out user and welcome message
+                user = scan.next();
+                System.out.print(user + ", your cart ");
+
+                // find out if user file exists
+                File userFile = new File(user + File.separator + dirPath);
+
+                // if user exists, update the shopping list
+                if (userFile.exists()) {
+                    
+                    // use file reader to fill up shopping cart list
+                    FileReader fr = new FileReader(userFile);
+                    BufferedReader br = new BufferedReader(fr);
+                    String line = "";
+
+                    while ((line = br.readLine()) != null) {
+                        shoppingList.add(line);
+                    }
+
+                    br.close();
+                    fr.close();
+
+                    
+                    // if the user does not exist
+                } else {
+                    userFile.createNewFile();
+                   
+                }
+
+                // if the size of the shopping list is more than 0
+                if (shoppingList.size() > 0) {
+                    System.out.println(user + ", your cart contains the following items");
+                    for (int i = 0; i < shoppingList.size(); i++) {
+                        System.out.println((i + 1) + ". " + shoppingList.get(i));
+                    }
+
+                // if shopping list is empty
+                } else {
+                    System.out.println(user + ", your cart is empty");
+                }
             }
 
             // list function
             if (input.equals("list")) {
                 
                 // if list is empty
-                if (shoppingList.isEmpty()) {
+                if (shoppingList.isEmpty() || shoppingList==null) {
                     System.out.println("Your cart is empty");
 
                 // if list is not empty
@@ -66,6 +123,13 @@ public class App {
 
             // add function
             if (input.equals("add")) {
+
+                // instantiate shopping list if not yet instantiated
+                if (newShoppingList == true) {
+                    shoppingList = new ArrayList<String>();
+                    newShoppingList = false;
+                }
+
                 String itemInput = scan.nextLine();
 
                 // place items individually in a list
