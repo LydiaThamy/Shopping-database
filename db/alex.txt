@@ -1,1 +1,4 @@
-guava
+peach
+pineapple
+papaya
+pear

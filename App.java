@@ -56,22 +56,31 @@ public class App {
                 System.out.println("Type 'delete (index of item)' to delete an item in your shopping cart");
                 System.out.println("Type 'end' to finish editing your shopping cart");
             }
-            
+
             // login function
             if (input.equals("login")) {
-                
-                // find out user
-                String userInput = scan.nextLine().trim().replaceAll("\\p{P}", " ");
-                
-                // check if the user has put in a username
-                if (userInput.matches("[a-zA-Z0-9]*&")) {
-                    
-                    // tell system that you are logged in
-                    loggedIn = true;
 
-                    // if input is a different user from existing
-                    if (!userInput.equals(user)) {
-                        user = userInput;
+                // create new scanner to scan username
+                // login loop will have a logical error if you do not create a new scanner
+                Scanner userInput = new Scanner(scan.nextLine()); // input after 'login'
+
+                // if a username has been given
+                if (userInput.hasNext()) {
+
+                    // find out user
+                    String username = userInput.nextLine().replaceAll("\\p{P}", " ").trim();
+
+                    // if the same person logs in again
+                    if (username.equals(user)) {
+                        System.out.println("You are already logged in");
+
+                        // if someone logs in with a valid username
+                    } else if (username.matches("^[a-zA-Z0-9]*$")) {
+
+                        // tell system that you are logged in
+                        loggedIn = true;
+
+                        user = username;
 
                         // instantiate new shopping list
                         shoppingList = new ArrayList<String>();
@@ -117,12 +126,10 @@ public class App {
                         }
 
                     } else {
-                        System.out.println("You are already logged in");
+                        System.out.println("Please use a username with alphabets and numbers only e.g. abc123");
                     }
-
-
-                } else if (user != null) {
-                    System.out.println(user + " is logged in");
+                      
+                    // if someone has not logged in, ask to login with username
                 } else {
                     System.out.println("Please login with your username e.g. login username");
                 }
