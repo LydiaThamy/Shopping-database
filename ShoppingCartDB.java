@@ -17,15 +17,17 @@ public class ShoppingCartDB {
     // only instantiate the shopping list once a user logs in or adds something to the cart
     List<String> shoppingList = null;
 
+    // constructor
     public ShoppingCartDB() {
         // shoppingList = new ArrayList<String>();
     }
 
+    // directory function
     public String getDirPath() {
         return dirPath;
     }
 
-    public void directory(String[] args){
+    public void directory(String[] args) {
         if (args.length == 0) {
             dirPath = "db";
         } else {
@@ -38,85 +40,13 @@ public class ShoppingCartDB {
         }
     }
 
-    /*
-    // login function
-    public void login() {
-        
-                // create new scanner to scan username
-                // login loop will have a logical error if you do not create a new scanner
-                Scanner userInput = new Scanner(scan.nextLine()); // input after 'login'
-
-                // if a username has been given
-                if (userInput.hasNext()) {
-
-                    // find out user
-                    String username = userInput.nextLine().replaceAll("\\p{P}", " ").trim();
-
-                    // if the same person logs in again
-                    if (username.equals(user)) {
-                        System.out.println("You are already logged in");
-
-                        // if someone logs in with a valid username
-                    } else if (username.matches("^[a-zA-Z0-9]*$")) {
-
-                        // tell system that you are logged in
-                        loggedIn = true;
-
-                        user = username;
-
-                        // instantiate new shopping list
-                        shoppingList = new ArrayList<String>();
-                        newShoppingList = false;
-
-                        // 1. find out if user file exists
-                        String dirPathFileName = dirPath + File.separator + user + ".txt";
-                        File userFile = new File(dirPathFileName);
-
-                        // 2a. if user exists, update the shopping list
-                        if (userFile.exists()) {
-                            System.out.println("Welcome back, " + user);
-
-                            // use file reader to fill up shopping cart list
-                            FileReader fr = new FileReader(userFile);
-                            BufferedReader br = new BufferedReader(fr);
-                            String line = "";
-
-                            while ((line = br.readLine()) != null) {
-                                shoppingList.add(line);
-                            }
-
-                            br.close();
-                            fr.close();
-
-                            // 2b. if the user does not exist
-                        } else {
-                            System.out.println("Nice to meet you, " + user);
-                            userFile.createNewFile();
-                        }
-
-                        // 3. print out shopping list details
-                        // if the size of the shopping list is more than 0
-                        if (shoppingList.size() > 0) {
-                            System.out.println(user + ", your cart contains the following items");
-                            for (int i = 0; i < shoppingList.size(); i++) {
-                                System.out.println((i + 1) + ". " + shoppingList.get(i));
-                            }
-
-                            // if shopping list is empty
-                        } else {
-                            System.out.println(user + ", your cart is empty");
-                        }
-
-                    } else {
-                        System.out.println("Please use a username with alphabets and numbers only e.g. abc123");
-                    }
-                      
-                    // if someone has not logged in, ask to login with username
-                } else {
-                    System.out.println("Please login with your username e.g. login username");
-                }
+    // help function
+    public void help() {
+        System.out.println("Type 'list' to see a list of items in your shopping cart");
+        System.out.println("Type 'add (item 1, item 2, etc...)' to add items into your shopping cart");
+        System.out.println("Type 'delete (index of item)' to delete an item in your shopping cart");
+        System.out.println("Type 'end' to finish editing your shopping cart");
     }
-*/
 
     // login function
     public void login(String input) throws IOException {
@@ -252,3 +182,91 @@ public class ShoppingCartDB {
 
 
 }
+
+
+
+
+
+
+
+
+
+   /*
+    // login function
+    public void login() {
+        
+                // create new scanner to scan username
+                // login loop will have a logical error if you do not create a new scanner
+                Scanner userInput = new Scanner(scan.nextLine()); // input after 'login'
+
+                // if a username has been given
+                if (userInput.hasNext()) {
+
+                    // find out user
+                    String username = userInput.nextLine().replaceAll("\\p{P}", " ").trim();
+
+                    // if the same person logs in again
+                    if (username.equals(user)) {
+                        System.out.println("You are already logged in");
+
+                        // if someone logs in with a valid username
+                    } else if (username.matches("^[a-zA-Z0-9]*$")) {
+
+                        // tell system that you are logged in
+                        loggedIn = true;
+
+                        user = username;
+
+                        // instantiate new shopping list
+                        shoppingList = new ArrayList<String>();
+                        newShoppingList = false;
+
+                        // 1. find out if user file exists
+                        String dirPathFileName = dirPath + File.separator + user + ".txt";
+                        File userFile = new File(dirPathFileName);
+
+                        // 2a. if user exists, update the shopping list
+                        if (userFile.exists()) {
+                            System.out.println("Welcome back, " + user);
+
+                            // use file reader to fill up shopping cart list
+                            FileReader fr = new FileReader(userFile);
+                            BufferedReader br = new BufferedReader(fr);
+                            String line = "";
+
+                            while ((line = br.readLine()) != null) {
+                                shoppingList.add(line);
+                            }
+
+                            br.close();
+                            fr.close();
+
+                            // 2b. if the user does not exist
+                        } else {
+                            System.out.println("Nice to meet you, " + user);
+                            userFile.createNewFile();
+                        }
+
+                        // 3. print out shopping list details
+                        // if the size of the shopping list is more than 0
+                        if (shoppingList.size() > 0) {
+                            System.out.println(user + ", your cart contains the following items");
+                            for (int i = 0; i < shoppingList.size(); i++) {
+                                System.out.println((i + 1) + ". " + shoppingList.get(i));
+                            }
+
+                            // if shopping list is empty
+                        } else {
+                            System.out.println(user + ", your cart is empty");
+                        }
+
+                    } else {
+                        System.out.println("Please use a username with alphabets and numbers only e.g. abc123");
+                    }
+                      
+                    // if someone has not logged in, ask to login with username
+                } else {
+                    System.out.println("Please login with your username e.g. login username");
+                }
+    }
+*/

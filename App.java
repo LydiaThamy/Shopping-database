@@ -28,15 +28,17 @@ public class App {
 
             // help function
             if (input.startsWith("help")) {
-                System.out.println("Type 'list' to see a list of items in your shopping cart");
-                System.out.println("Type 'add (item 1, item 2, etc...)' to add items into your shopping cart");
-                System.out.println("Type 'delete (index of item)' to delete an item in your shopping cart");
-                System.out.println("Type 'end' to finish editing your shopping cart");
+                shoppingCart.help();
             }
             
             // login function
             if (input.startsWith("login")) {
                 shoppingCart.login(input);
+            }
+
+            // list function
+            if (input.startsWith("list")) {
+                shoppingCart.list();
             }
 
 /*
@@ -64,10 +66,7 @@ public class App {
                 }
             }
                 */
-            // list function
-            if (input.startsWith("list")) {
-                shoppingCart.list();
-            }
+            
 
             /*
             // add function
