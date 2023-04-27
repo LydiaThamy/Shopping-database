@@ -46,36 +46,12 @@ public class App {
                 shoppingCart.add(input);
             }
 
-    /*
             // delete function
-            if (input.equals("delete")) {
-
-                try {
-                    Integer index = Integer.parseInt(scan.next());
-
-                    // if list is empty
-                    if (shoppingList.isEmpty()) {
-                        System.out.println("Your cart is empty");
-
-                        // if incorrect index provided
-                        // index bigger than list size
-                        // index is less or equal to 0
-                    } else if (index > shoppingList.size() || index <= 0) {
-                        System.out.println("Incorrect item index");
-
-                        // if correct index provided
-                    } else {
-                        System.out.println(shoppingList.get(index - 1) + " removed from cart");
-                        shoppingList.remove(index - 1);
-                    }
-
-                } catch (NumberFormatException nfe) {
-                    System.out.println("Please input a number to delete e.g. delete 1");
-                    // System.out.println(nfe);
-                }
-
+            if (input.startsWith("delete")) {
+                shoppingCart.delete(input);
             }
 
+/*
             // save function
             if (input.equals("save")) {
                 if (loggedIn == true) {

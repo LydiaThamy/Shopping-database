@@ -177,12 +177,43 @@ public class ShoppingCartDB {
             System.out.println("Please add items into your cart e.g. add item1, item2...");
         }    
     } 
-/*
-    // delete function
-    public void delete () {
 
+    // delete function
+    public void delete (String input) {
+        
+        if (input.length() > 7 && newShoppingList == false) {
+                
+            // convert string to integer
+            try {
+                Integer index = Integer.parseInt(input.substring(7).trim());
+
+                // if list is empty
+                if (shoppingList.isEmpty()) {
+                    System.out.println("Your cart is empty");
+
+                    // if incorrect index provided
+                    // index bigger than list size
+                    // index is less or equal to 0
+                } else if (index > shoppingList.size() || index <= 0) {
+                    System.out.println("Incorrect item index");
+
+                    // if correct index provided
+                } else {
+                    System.out.println(shoppingList.get(index - 1) + " removed from cart");
+                    shoppingList.remove(index - 1);
+                }
+
+                // if a non number is placed in, send an error message
+            } catch (NumberFormatException nfe) {
+                System.out.println("Please input the item's index on the shopping list to delete e.g. delete 1");
+                // System.out.println(nfe);
+            }
+        } else if (newShoppingList) {
+            System.out.println("Your cart is empty");
+        } else {
+            System.out.println("Please input the item's index on the shopping list to delete e.g. delete 1");
+        }
     }
-*/
 
 }
 
