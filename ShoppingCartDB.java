@@ -51,15 +51,12 @@ public class ShoppingCartDB {
     // login function
     public void login(String input) throws IOException {
         
-        // // create new scanner to scan username
-        // // login loop will have a logical error if you do not create a new scanner
-        // Scanner userInput = new Scanner(scan.nextLine()); // input after 'login'
-
         // if a username has been given
         if (input.length() > 6) {
 
             // find out user
-            String username = input.substring(6).trim().replaceAll("\\p{P}", " ");
+            String username = input.substring(6).trim();
+            username  = username.replaceAll("\\p{P}", " ");
 
             // if the same person logs in again
             if (loggedIn && username.equals(this.user)) {
@@ -74,8 +71,10 @@ public class ShoppingCartDB {
                 this.user = username;
 
                 // instantiate new shopping list
-                shoppingList = new ArrayList<String>();
-                newShoppingList = false;
+                if (newShoppingList) {
+                    shoppingList = new ArrayList<String>();
+                    newShoppingList = false;
+                }
 
                 // 1. find out if user file exists
                 String dirPathFileName = dirPath + File.separator + this.user + ".txt";
@@ -129,7 +128,7 @@ public class ShoppingCartDB {
     // list function
     public void list() {
 
-        if (newShoppingList == true) {
+        if (newShoppingList) {
             shoppingList = new ArrayList<>();
             System.out.println("Your cart is empty");
 
@@ -145,41 +144,45 @@ public class ShoppingCartDB {
         }
     }
 
-    /* // add function
-    public void add(String items) {
+     // add function
+    public void add(String input) {
 
-        // instantiate shopping list if not yet instantiated
-        if (newShoppingList == true) {
-            shoppingList = new ArrayList<String>();
-            newShoppingList = false;
-        }
+        if (input.length() > 4) {
 
-        // place items individually in a list
-        String[] itemList = items.split(",");
-
-        for (int i = 0; i < itemList.length; i++) {
-            itemList[i] = itemList[i].trim().toLowerCase().replaceAll("\\p{P}", " ");
-
-            // if item exists in a shopping cart
-            if (shoppingList.contains(itemList[i])) {
-                System.out.println("You have " + itemList[i] + " in your cart");
-
-                // if item is new
-                // item must not be a non-character
-            } else if (!itemList[i].isBlank()) {
-                shoppingList.add(itemList[i]);
-                System.out.println(itemList[i] + " added to cart");
+            // instantiate a new shopping list if needed
+            if (newShoppingList) {
+                shoppingList = new ArrayList<String>();
+                newShoppingList = false;
             }
-        }
 
-    } */
+            // place items individually in a list
+            String[] itemList = input.substring(4).trim().split(",");
 
+            for (int i = 0; i < itemList.length; i++) {
+                itemList[i] = itemList[i].trim().toLowerCase().replaceAll("\\p{P}", " ");
+
+                // if item exists in a shopping cart
+                if (shoppingList.contains(itemList[i])) {
+                    System.out.println("You have " + itemList[i] + " in your cart");
+
+                    // if item is new
+                    // item must not be a non-character
+                } else if (!itemList[i].isBlank()) {
+                    shoppingList.add(itemList[i]);
+                    System.out.println(itemList[i] + " added to cart");
+                }
+            }
+        
+        } else {
+            System.out.println("Please add items into your cart e.g. add item1, item2...");
+        }    
+    } 
+/*
     // delete function
     public void delete () {
 
     }
-
-
+*/
 
 }
 

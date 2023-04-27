@@ -41,43 +41,12 @@ public class App {
                 shoppingCart.list();
             }
 
-/*
-            // save function
-            if (input.equals("save")) {
-                if (loggedIn == true) {
-                    System.out.println("Your cart has been saved");
-
-                    // overwrite shopping cart
-                    String dirPathFileName = dirPath + File.separator + user + ".txt";
-                    FileWriter fw = new FileWriter(dirPathFileName, false);
-                    BufferedWriter bw = new BufferedWriter(fw);
-
-                    if (shoppingList.size() > 0) {
-                        for (int i = 0; i < shoppingList.size(); i++) {
-                            bw.append(shoppingList.get(i) + "\n");
-                        }
-                    }
-
-                    bw.flush();
-                    bw.close();
-                    fw.close();
-                } else {
-                    System.out.println("Please login in first before saving");
-                }
-            }
-                */
-            
-
-            /*
             // add function
-            if (input.equals("add")) {
-                Scanner itemInput = new Scanner(System.in);
-                String items = itemInput.nextLine();
-                itemInput.close();
-
-                // use add method with items as an argument
-                shoppingCart.add(items);
+            if (input.startsWith("add")) {
+                shoppingCart.add(input);
             }
+
+    /*
             // delete function
             if (input.equals("delete")) {
 
@@ -105,6 +74,30 @@ public class App {
                     // System.out.println(nfe);
                 }
 
+            }
+
+            // save function
+            if (input.equals("save")) {
+                if (loggedIn == true) {
+                    System.out.println("Your cart has been saved");
+
+                    // overwrite shopping cart
+                    String dirPathFileName = dirPath + File.separator + user + ".txt";
+                    FileWriter fw = new FileWriter(dirPathFileName, false);
+                    BufferedWriter bw = new BufferedWriter(fw);
+
+                    if (shoppingList.size() > 0) {
+                        for (int i = 0; i < shoppingList.size(); i++) {
+                            bw.append(shoppingList.get(i) + "\n");
+                        }
+                    }
+
+                    bw.flush();
+                    bw.close();
+                    fw.close();
+                } else {
+                    System.out.println("Please login in first before saving");
+                }
             }
 
             // users function
@@ -141,7 +134,7 @@ public class App {
             */
 
         }
-
+        
         scan.close();
         System.out.println("Thanks for shopping with us. Bye bye!");
 
