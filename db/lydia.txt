@@ -1,6 +1,4 @@
-apple
-pear
-soap
-sponge
-orange
-grape
+leaf
+flower
+stem
+bud

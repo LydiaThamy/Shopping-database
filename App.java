@@ -12,40 +12,36 @@ import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) throws IOException {
-
-        // checkers
-        boolean loggedIn = false;
-        boolean newShoppingList = true;
-
-        // directory pathlydia
+        // directory path
         String user = null;
         String dirPath = null;
-        // String dirPathFileName = dirPath + File.separator + user + ".txt";
-
+        
         if (args.length == 0) {
             dirPath = "db";
         } else {
             dirPath = args[0];
         }
-
+        
         File directory = new File(dirPath);
         if (!directory.exists()) {
             directory.mkdir();
         }
-
+        
         // welcome message
         System.out.println("Welcome to your shopping cart in the " + dirPath + " directory.");
         System.out.println("Please type a command. You may type 'help' if you need a list of commands.");
-
+        
         // terminal input
         String input = "";
         Scanner scan = new Scanner(System.in);
 
-        // only instantiate the shopping list once a user logs in or adds something to
-        // the cart
-        List<String> shoppingList = null;
+        // instantiate shopping cart object
+        ShoppingCartDB shoppingCart = new ShoppingCartDB();
 
-        // done function
+        // !!checkers
+        boolean loggedIn = false;    
+
+        // end function
         while (!input.equals("end")) {
             input = scan.next();
 
@@ -57,6 +53,7 @@ public class App {
                 System.out.println("Type 'end' to finish editing your shopping cart");
             }
 
+            /*
             // login function
             if (input.equals("login")) {
 
@@ -133,8 +130,8 @@ public class App {
                 } else {
                     System.out.println("Please login with your username e.g. login username");
                 }
-            }
-
+            } 
+            
             // save function
             if (input.equals("save")) {
                 if (loggedIn == true) {
@@ -158,52 +155,22 @@ public class App {
                     System.out.println("Please login in first before saving");
                 }
             }
-
+                */
             // list function
             if (input.equals("list")) {
-
-                // if list is empty
-                if (shoppingList.isEmpty() || shoppingList == null) {
-                    System.out.println("Your cart is empty");
-
-                    // if list is not empty
-                } else {
-                    for (int i = 0; i < shoppingList.size(); i++) {
-                        System.out.println((i + 1) + ". " + shoppingList.get(i));
-                    }
-                }
+                shoppingCart.list();
             }
 
             // add function
             if (input.equals("add")) {
+                Scanner itemInput = new Scanner(System.in);
+                String items = itemInput.nextLine();
+                itemInput.close();
 
-                // instantiate shopping list if not yet instantiated
-                if (newShoppingList == true) {
-                    shoppingList = new ArrayList<String>();
-                    newShoppingList = false;
-                }
-
-                String itemInput = scan.nextLine();
-
-                // place items individually in a list
-                String[] item = itemInput.split(",");
-
-                for (int i = 0; i < item.length; i++) {
-                    item[i] = item[i].trim().toLowerCase().replaceAll("\\p{P}", " ");
-
-                    // if item exists in a shopping cart
-                    if (shoppingList.contains(item[i])) {
-                        System.out.println("You have " + item[i] + " in your cart");
-
-                        // if item is new
-                        // item must not be a non-character
-                    } else if (!item[i].isBlank()) {
-                        shoppingList.add(item[i]);
-                        System.out.println(item[i] + " added to cart");
-                    }
-                }
+                // use add method with items as an argument
+                shoppingCart.add(items);
             }
-
+            /*
             // delete function
             if (input.equals("delete")) {
 
@@ -232,6 +199,39 @@ public class App {
                 }
 
             }
+
+            // users function
+            if (input.equals("users")) {
+                
+                // if cartdb exists, list out files in cart db
+                File cartdbPath = new File("cartdb");
+                if (cartdbPath.exists()) {
+                    String[] fileList = cartdbPath.list();
+
+                    // only print names if they are text files
+                    for (String file:fileList) {
+                        if (file.endsWith(".txt")) {
+                            file = file.replace(".txt", "");
+                            System.out.println(file);
+                        }
+                    }
+                }
+
+                // if db exists, list out files in db
+                File dbPath = new File("db");
+                if (dbPath.exists()) {
+                    String[] fileList = dbPath.list();
+
+                    // only print names if they are text files
+                    for (String file:fileList) {
+                        if (file.endsWith(".txt")) {
+                            file = file.replace(".txt", "");
+                            System.out.println(file);
+                        }
+                    }
+                }
+            }
+            */
 
         }
 
