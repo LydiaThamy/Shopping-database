@@ -12,7 +12,6 @@ import java.util.List;
 public class ShoppingCartDB {
     
     private String dirPath = null;
-    private boolean newShoppingList = false;
     private boolean loggedIn = false;
     private String user = null;
 
@@ -45,9 +44,9 @@ public class ShoppingCartDB {
     // help function
     public void help() {
         System.out.println("Type 'list' to see a list of items in your shopping cart");
-        System.out.println("Type 'add (item 1, item 2, etc...)' to add items into your shopping cart");
+        System.out.println("Type 'add item 1, item 2...' to add items into your shopping cart");
         System.out.println("Type 'delete (index of item)' to delete an item in your shopping cart");
-        System.out.println("Type 'end' to finish editing your shopping cart");
+        System.out.println("Type 'quit' to end your shoppping with us");
     }
 
     // login function
@@ -63,7 +62,6 @@ public class ShoppingCartDB {
             // if the same person logs in again
             if (this.loggedIn && username.equals(this.user)) {
                 System.out.println("You are already logged in");
-                this.loggedIn = true;
 
                 // if someone logs in with a valid username
             } else if (username.matches("^[a-zA-Z0-9]*$")) {
@@ -76,7 +74,6 @@ public class ShoppingCartDB {
 
                 // instantiate new shopping list
                 this.shoppingList = new ArrayList<String>();
-                this.newShoppingList = false;
                 
                 // 1. find out if user file exists
                 String dirPathFileName = this.dirPath + File.separator + this.user + ".txt";
@@ -84,7 +81,7 @@ public class ShoppingCartDB {
 
                 // 2a. if user exists, update the shopping list
                 if (userFile.exists()) {
-                    System.out.println("Welcome back, " + this.user);
+                    System.out.print("Welcome back, " + this.user + ". ");
 
                     // use file reader to fill up shopping cart list
                     FileReader fr = new FileReader(userFile);
@@ -100,30 +97,30 @@ public class ShoppingCartDB {
 
                     // 2b. if the user does not exist
                 } else {
-                    System.out.println("Nice to meet you, " + this.user);
+                    System.out.print("Nice to meet you, " + this.user + ". ");
                     userFile.createNewFile();
                 }
 
                 // 3. print out shopping list details
                 // if the size of the shopping list is more than 0
                 if (this.shoppingList.size() > 0) {
-                    System.out.println("Your cart contains the following items");
+                    System.out.println("Your cart contains the following items:");
                     for (int i = 0; i < this.shoppingList.size(); i++) {
                         System.out.println((i + 1) + ". " + this.shoppingList.get(i));
                     }
 
                     // if shopping list is empty
                 } else {
-                    System.out.println("Your cart is empty");
+                    System.out.println("Your cart is empty.");
                 }
 
             } else {
-                System.out.println("Use a username with alphabets and numbers only e.g. abc123");
+                System.out.println("Use a username with alphabets and numbers only e.g. abc123.");
             }
               
             // if someone has not logged in, ask to login with username
         } else {
-            System.out.println("Log in with your username e.g. login username");
+            System.out.println("Log in with your username e.g. login username.");
         }
 }
  
@@ -131,15 +128,15 @@ public class ShoppingCartDB {
     public void list() {
 
         if (!this.loggedIn) {
-            // this.shoppingList = new ArrayList<>();
-            System.out.println("Log in to view the items in your cart");
+            System.out.println("Log in to view the items in your cart.");
 
         // if list is empty
         } else if (this.shoppingList.isEmpty()) {
-            System.out.println("Your cart is empty");
+            System.out.println("Your cart is empty.");
 
             // if list is not empty
         } else {
+            System.out.println("You have these items in your cart:");
             for (int i = 0; i < this.shoppingList.size(); i++) {
                 System.out.println((i + 1) + ". " + this.shoppingList.get(i));
             }
@@ -150,7 +147,7 @@ public class ShoppingCartDB {
     public void add(String input) {
 
         if (!loggedIn) {
-            System.out.println("Log in before adding items to your cart");
+            System.out.println("Log in to add items to your cart.");
 
         } else if (input.length() > 4) {
             // place items individually in a list
@@ -161,7 +158,7 @@ public class ShoppingCartDB {
 
                 // if item exists in a shopping cart
                 if (this.shoppingList.contains(itemList[i])) {
-                    System.out.println("You have " + itemList[i] + " in your cart");
+                    System.out.println("You have " + itemList[i] + " in your cart.");
 
                     // if item is new
                     // item must not be a non-character
@@ -179,46 +176,48 @@ public class ShoppingCartDB {
     // delete function
     public void delete (String input) {
       
-    if (!loggedIn) {
-            System.out.println("Log in before deleting items from your cart");
-    
-    } else if (input.length() > 7/*  && !newShoppingList */) {
-            
-        // convert string to integer
-        try {
-            Integer index = Integer.parseInt(input.substring(7).trim());
-
+        if (!loggedIn) {
+            System.out.println("Log in to delete items from your cart.");
+                
             // if list is empty
-            if (this.shoppingList.isEmpty()) {
-                System.out.println("Your cart is empty");
+        } else if (this.shoppingList.isEmpty()) {
+            System.out.println("Your cart is empty.");
+        
+        } else if (input.length() > 7) {
+            
+            // convert string to integer
+            try {
+                Integer index = Integer.parseInt(input.substring(7).trim());
 
-                // if incorrect index provided
-                // index bigger than list size
-                // index is less or equal to 0
-            } else if (index > this.shoppingList.size() || index <= 0) {
-                System.out.println("Incorrect item index");
+                    // if incorrect index provided
+                    // index bigger than list size
+                    // index is less or equal to 0
+                if (index > this.shoppingList.size() || index <= 0) {
+                    System.out.println("The item index does not exist. Type 'list' to view the items in your cart.");
 
-                // if correct index provided
-            } else {
-                System.out.println(shoppingList.get(index - 1) + " removed from cart");
-                this.shoppingList.remove(index - 1);
+                    // if correct index provided
+                } else {
+                    System.out.println(shoppingList.get(index - 1) + " removed from cart");
+                    this.shoppingList.remove(index - 1);
+                }
+
+                // if a non-number is input, send an error message
+            } catch (NumberFormatException nfe) {
+                System.out.println("Type the item's index on the shopping list to delete e.g. delete 1.");
+                // System.out.println(nfe);
             }
 
-            // if a non number is placed in, send an error message
-        } catch (NumberFormatException nfe) {
-            System.out.println("Type the item's index on the shopping list to delete e.g. delete 1");
-            // System.out.println(nfe);
+        } else {
+            System.out.println("Type the item's index on the shopping list to delete e.g. delete 1.");
         }
-    /*}  else if (this.newShoppingList) {
-        System.out.println("Your cart is empty"); */
-    } else {
-        System.out.println("Type the item's index on the shopping list to delete e.g. delete 1");
-    }
     }
 
     public void save() throws IOException {
-        if (this.loggedIn) {
+        
+        if (!this.loggedIn) {
+            System.out.println("Log in in before saving your cart.");
 
+        } else {
             // overwrite shopping cart
             String dirPathFileName = dirPath + File.separator + user + ".txt";
             FileWriter fw = new FileWriter(dirPathFileName, false);
@@ -234,110 +233,50 @@ public class ShoppingCartDB {
             bw.close();
             fw.close();
 
+            // log out user
+            this.user = null;
+
             // make sure that you are logged out
             this.loggedIn = false;
 
             // clear shopping list
             this.shoppingList = null;
-            this.newShoppingList = true;
 
-            // log out user
-            this.user = null;
+            System.out.println("Your cart has been saved. Log in to access your cart.");
+        }
+    }
 
-            System.out.println("Your cart has been saved.");
-            System.out.println("You have been logged out. Please log in again if you need to continue adding things into your cart.");
+    public void users() {
+        
+        // if cartdb exists, list out files in cart db
+        File cartdbPath = new File("cartdb");
+        if (cartdbPath.exists()) {
+            System.out.println("Users in the cartdb directory:");
+            String[] fileList = cartdbPath.list();
 
-        } else {
-            System.out.println("Log in in first before saving");
+            // only print names if they are text files
+            for (String file:fileList) {
+                if (file.endsWith(".txt")) {
+                    file = file.replace(".txt", "");
+                    System.out.println(file);
+                }
+            }
+        }
+
+        // if db exists, list out files in db
+        File dbPath = new File("db");
+        if (dbPath.exists()) {
+            System.out.println("Users in the db directory:");
+            String[] fileList = dbPath.list();
+
+            // only print names if they are text files
+            for (String file:fileList) {
+                if (file.endsWith(".txt")) {
+                    file = file.replace(".txt", "");
+                    System.out.println(file);
+                }
+            }
         }
     }
 
 }
-
-
-
-
-
-
-
-
-
-   /*
-    // login function
-    public void login() {
-        
-                // create new scanner to scan username
-                // login loop will have a logical error if you do not create a new scanner
-                Scanner userInput = new Scanner(scan.nextLine()); // input after 'login'
-
-                // if a username has been given
-                if (userInput.hasNext()) {
-
-                    // find out user
-                    String username = userInput.nextLine().replaceAll("\\p{P}", " ").trim();
-
-                    // if the same person logs in again
-                    if (username.equals(user)) {
-                        System.out.println("You are already logged in");
-
-                        // if someone logs in with a valid username
-                    } else if (username.matches("^[a-zA-Z0-9]*$")) {
-
-                        // tell system that you are logged in
-                        loggedIn = true;
-
-                        user = username;
-
-                        // instantiate new shopping list
-                        shoppingList = new ArrayList<String>();
-                        newShoppingList = false;
-
-                        // 1. find out if user file exists
-                        String dirPathFileName = dirPath + File.separator + user + ".txt";
-                        File userFile = new File(dirPathFileName);
-
-                        // 2a. if user exists, update the shopping list
-                        if (userFile.exists()) {
-                            System.out.println("Welcome back, " + user);
-
-                            // use file reader to fill up shopping cart list
-                            FileReader fr = new FileReader(userFile);
-                            BufferedReader br = new BufferedReader(fr);
-                            String line = "";
-
-                            while ((line = br.readLine()) != null) {
-                                shoppingList.add(line);
-                            }
-
-                            br.close();
-                            fr.close();
-
-                            // 2b. if the user does not exist
-                        } else {
-                            System.out.println("Nice to meet you, " + user);
-                            userFile.createNewFile();
-                        }
-
-                        // 3. print out shopping list details
-                        // if the size of the shopping list is more than 0
-                        if (shoppingList.size() > 0) {
-                            System.out.println(user + ", your cart contains the following items");
-                            for (int i = 0; i < shoppingList.size(); i++) {
-                                System.out.println((i + 1) + ". " + shoppingList.get(i));
-                            }
-
-                            // if shopping list is empty
-                        } else {
-                            System.out.println(user + ", your cart is empty");
-                        }
-
-                    } else {
-                        System.out.println("Please use a username with alphabets and numbers only e.g. abc123");
-                    }
-                      
-                    // if someone has not logged in, ask to login with username
-                } else {
-                    System.out.println("Please login with your username e.g. login username");
-                }
-    }
-*/

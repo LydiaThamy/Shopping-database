@@ -22,7 +22,7 @@ public class App {
 
 
         // end function
-        while (!input.startsWith("end")) {
+        while (!input.startsWith("quit")) {
             input = scan.nextLine().trim();
 
             // System.out.println(input);
@@ -57,43 +57,15 @@ public class App {
                 shoppingCart.save();
             }
 
-/*
             // users function
             else if (input.equals("users")) {
-                
-                // if cartdb exists, list out files in cart db
-                File cartdbPath = new File("cartdb");
-                if (cartdbPath.exists()) {
-                    String[] fileList = cartdbPath.list();
-
-                    // only print names if they are text files
-                    for (String file:fileList) {
-                        if (file.endsWith(".txt")) {
-                            file = file.replace(".txt", "");
-                            System.out.println(file);
-                        }
-                    }
-                }
-
-                // if db exists, list out files in db
-                File dbPath = new File("db");
-                if (dbPath.exists()) {
-                    String[] fileList = dbPath.list();
-
-                    // only print names if they are text files
-                    for (String file:fileList) {
-                        if (file.endsWith(".txt")) {
-                            file = file.replace(".txt", "");
-                            System.out.println(file);
-                        }
-                    }
-                }
+                shoppingCart.users();
             }
-            */
+            
 
             // ending command
             else {
-                System.out.println("Type a command. You may type 'help' if you need a list of commands.");
+                System.out.println("Type a command. Type 'help' if you need a list of commands.");
             }
         }
         
