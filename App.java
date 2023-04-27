@@ -1,13 +1,6 @@
 package sg.edu.nus.iss;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class App {
@@ -29,23 +22,24 @@ public class App {
 
 
         // end function
-        while (!input.equals("end")) {
+        while (!input.startsWith("end")) {
             input = scan.nextLine();
+            // System.out.println(input);
 
             // help function
-            if (input.equals("help")) {
+            if (input.startsWith("help")) {
                 System.out.println("Type 'list' to see a list of items in your shopping cart");
                 System.out.println("Type 'add (item 1, item 2, etc...)' to add items into your shopping cart");
                 System.out.println("Type 'delete (index of item)' to delete an item in your shopping cart");
                 System.out.println("Type 'end' to finish editing your shopping cart");
             }
-
-            /*
+            
             // login function
-            if (input.equals("login")) {
-                shoppingCart.login(input, user);
+            if (input.startsWith("login")) {
+                shoppingCart.login(input);
             }
 
+/*
             // save function
             if (input.equals("save")) {
                 if (loggedIn == true) {
@@ -71,7 +65,7 @@ public class App {
             }
                 */
             // list function
-            if (input.equals("list")) {
+            if (input.startsWith("list")) {
                 shoppingCart.list();
             }
 

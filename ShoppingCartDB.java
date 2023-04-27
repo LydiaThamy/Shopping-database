@@ -1,6 +1,9 @@
 package sg.edu.nus.iss;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,23 +116,23 @@ public class ShoppingCartDB {
                     System.out.println("Please login with your username e.g. login username");
                 }
     }
-
+*/
 
     // login function
-    public void login(String input) {
+    public void login(String input) throws IOException {
         
         // // create new scanner to scan username
         // // login loop will have a logical error if you do not create a new scanner
         // Scanner userInput = new Scanner(scan.nextLine()); // input after 'login'
 
         // if a username has been given
-        if (input.length() > 5) {
+        if (input.length() > 6) {
 
             // find out user
-            String username = input.substring(5).replaceAll("\\p{P}", " ").trim();
+            String username = input.substring(6).trim().replaceAll("\\p{P}", " ");
 
             // if the same person logs in again
-            if (username.equals(this.user)) {
+            if (loggedIn && username.equals(this.user)) {
                 System.out.println("You are already logged in");
 
                 // if someone logs in with a valid username
@@ -145,12 +148,12 @@ public class ShoppingCartDB {
                 newShoppingList = false;
 
                 // 1. find out if user file exists
-                String dirPathFileName = dirPath + File.separator + user + ".txt";
+                String dirPathFileName = dirPath + File.separator + this.user + ".txt";
                 File userFile = new File(dirPathFileName);
 
                 // 2a. if user exists, update the shopping list
                 if (userFile.exists()) {
-                    System.out.println("Welcome back, " + user);
+                    System.out.println("Welcome back, " + this.user);
 
                     // use file reader to fill up shopping cart list
                     FileReader fr = new FileReader(userFile);
@@ -166,7 +169,7 @@ public class ShoppingCartDB {
 
                     // 2b. if the user does not exist
                 } else {
-                    System.out.println("Nice to meet you, " + user);
+                    System.out.println("Nice to meet you, " + this.user);
                     userFile.createNewFile();
                 }
 
@@ -180,7 +183,7 @@ public class ShoppingCartDB {
 
                     // if shopping list is empty
                 } else {
-                    System.out.println(user + ", your cart is empty");
+                    System.out.println(this.user + ", your cart is empty");
                 }
 
             } else {
@@ -192,11 +195,16 @@ public class ShoppingCartDB {
             System.out.println("Please login with your username e.g. login username");
         }
 }
- */
+ 
     // list function
     public void list() {
+
+        if (newShoppingList == true) {
+            shoppingList = new ArrayList<>();
+            System.out.println("Your cart is empty");
+
         // if list is empty
-        if (shoppingList.isEmpty()) {
+        } else if (shoppingList.isEmpty()) {
             System.out.println("Your cart is empty");
 
             // if list is not empty
