@@ -13,8 +13,8 @@ public class App {
         shoppingCart.directory(args);
         
         // welcome message
-        System.out.println("Welcome to your shopping cart in the " + shoppingCart.getDirPath() + " directory.");
-        System.out.println("Please type a command. You may type 'help' if you need a list of commands.");
+        System.out.println("Welcome to your shopping cart.");
+        System.out.println("You are in the " + shoppingCart.getDirPath() + " directory. Please log in.");
         
         // terminal input
         String input = "";
@@ -23,7 +23,8 @@ public class App {
 
         // end function
         while (!input.startsWith("end")) {
-            input = scan.nextLine();
+            input = scan.nextLine().trim();
+
             // System.out.println(input);
 
             // help function
@@ -32,52 +33,33 @@ public class App {
             }
             
             // login function
-            if (input.startsWith("login")) {
+            else if (input.startsWith("login")) {
                 shoppingCart.login(input);
             }
 
             // list function
-            if (input.startsWith("list")) {
+            else if (input.startsWith("list")) {
                 shoppingCart.list();
             }
 
             // add function
-            if (input.startsWith("add")) {
+            else if (input.startsWith("add")) {
                 shoppingCart.add(input);
             }
 
             // delete function
-            if (input.startsWith("delete")) {
+            else if (input.startsWith("delete")) {
                 shoppingCart.delete(input);
             }
 
-/*
             // save function
-            if (input.equals("save")) {
-                if (loggedIn == true) {
-                    System.out.println("Your cart has been saved");
-
-                    // overwrite shopping cart
-                    String dirPathFileName = dirPath + File.separator + user + ".txt";
-                    FileWriter fw = new FileWriter(dirPathFileName, false);
-                    BufferedWriter bw = new BufferedWriter(fw);
-
-                    if (shoppingList.size() > 0) {
-                        for (int i = 0; i < shoppingList.size(); i++) {
-                            bw.append(shoppingList.get(i) + "\n");
-                        }
-                    }
-
-                    bw.flush();
-                    bw.close();
-                    fw.close();
-                } else {
-                    System.out.println("Please login in first before saving");
-                }
+            else if (input.startsWith("save")) {
+                shoppingCart.save();
             }
 
+/*
             // users function
-            if (input.equals("users")) {
+            else if (input.equals("users")) {
                 
                 // if cartdb exists, list out files in cart db
                 File cartdbPath = new File("cartdb");
@@ -109,6 +91,10 @@ public class App {
             }
             */
 
+            // ending command
+            else {
+                System.out.println("Type a command. You may type 'help' if you need a list of commands.");
+            }
         }
         
         scan.close();

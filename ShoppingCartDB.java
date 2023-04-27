@@ -1,8 +1,10 @@
 package sg.edu.nus.iss;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,12 +12,12 @@ import java.util.List;
 public class ShoppingCartDB {
     
     private String dirPath = null;
-    private boolean newShoppingList = true;
+    private boolean newShoppingList = false;
     private boolean loggedIn = false;
     private String user = null;
 
     // only instantiate the shopping list once a user logs in or adds something to the cart
-    List<String> shoppingList = null;
+    List<String> shoppingList = new ArrayList<>();
 
     // constructor
     public ShoppingCartDB() {
@@ -24,17 +26,17 @@ public class ShoppingCartDB {
 
     // directory function
     public String getDirPath() {
-        return dirPath;
+        return this.dirPath;
     }
 
     public void directory(String[] args) {
         if (args.length == 0) {
-            dirPath = "db";
+            this.dirPath = "db";
         } else {
-            dirPath = args[0];
+            this.dirPath = args[0];
         }
         
-        File directory = new File(dirPath);
+        File directory = new File(this.dirPath);
         if (!directory.exists()) {
             directory.mkdir();
         }
@@ -59,25 +61,25 @@ public class ShoppingCartDB {
             username  = username.replaceAll("\\p{P}", " ");
 
             // if the same person logs in again
-            if (loggedIn && username.equals(this.user)) {
+            if (this.loggedIn && username.equals(this.user)) {
                 System.out.println("You are already logged in");
+                this.loggedIn = true;
 
                 // if someone logs in with a valid username
             } else if (username.matches("^[a-zA-Z0-9]*$")) {
 
                 // tell system that you are logged in
-                loggedIn = true;
+                this.loggedIn = true;
 
+                // assign new user
                 this.user = username;
 
                 // instantiate new shopping list
-                if (newShoppingList) {
-                    shoppingList = new ArrayList<String>();
-                    newShoppingList = false;
-                }
-
+                this.shoppingList = new ArrayList<String>();
+                this.newShoppingList = false;
+                
                 // 1. find out if user file exists
-                String dirPathFileName = dirPath + File.separator + this.user + ".txt";
+                String dirPathFileName = this.dirPath + File.separator + this.user + ".txt";
                 File userFile = new File(dirPathFileName);
 
                 // 2a. if user exists, update the shopping list
@@ -104,42 +106,42 @@ public class ShoppingCartDB {
 
                 // 3. print out shopping list details
                 // if the size of the shopping list is more than 0
-                if (shoppingList.size() > 0) {
-                    System.out.println(user + ", your cart contains the following items");
-                    for (int i = 0; i < shoppingList.size(); i++) {
-                        System.out.println((i + 1) + ". " + shoppingList.get(i));
+                if (this.shoppingList.size() > 0) {
+                    System.out.println("Your cart contains the following items");
+                    for (int i = 0; i < this.shoppingList.size(); i++) {
+                        System.out.println((i + 1) + ". " + this.shoppingList.get(i));
                     }
 
                     // if shopping list is empty
                 } else {
-                    System.out.println(this.user + ", your cart is empty");
+                    System.out.println("Your cart is empty");
                 }
 
             } else {
-                System.out.println("Please use a username with alphabets and numbers only e.g. abc123");
+                System.out.println("Use a username with alphabets and numbers only e.g. abc123");
             }
               
             // if someone has not logged in, ask to login with username
         } else {
-            System.out.println("Please login with your username e.g. login username");
+            System.out.println("Log in with your username e.g. login username");
         }
 }
  
     // list function
     public void list() {
 
-        if (newShoppingList) {
-            shoppingList = new ArrayList<>();
-            System.out.println("Your cart is empty");
+        if (!this.loggedIn) {
+            // this.shoppingList = new ArrayList<>();
+            System.out.println("Log in to view the items in your cart");
 
         // if list is empty
-        } else if (shoppingList.isEmpty()) {
+        } else if (this.shoppingList.isEmpty()) {
             System.out.println("Your cart is empty");
 
             // if list is not empty
         } else {
-            for (int i = 0; i < shoppingList.size(); i++) {
-                System.out.println((i + 1) + ". " + shoppingList.get(i));
+            for (int i = 0; i < this.shoppingList.size(); i++) {
+                System.out.println((i + 1) + ". " + this.shoppingList.get(i));
             }
         }
     }
@@ -147,14 +149,10 @@ public class ShoppingCartDB {
      // add function
     public void add(String input) {
 
-        if (input.length() > 4) {
+        if (!loggedIn) {
+            System.out.println("Log in before adding items to your cart");
 
-            // instantiate a new shopping list if needed
-            if (newShoppingList) {
-                shoppingList = new ArrayList<String>();
-                newShoppingList = false;
-            }
-
+        } else if (input.length() > 4) {
             // place items individually in a list
             String[] itemList = input.substring(4).trim().split(",");
 
@@ -162,56 +160,95 @@ public class ShoppingCartDB {
                 itemList[i] = itemList[i].trim().toLowerCase().replaceAll("\\p{P}", " ");
 
                 // if item exists in a shopping cart
-                if (shoppingList.contains(itemList[i])) {
+                if (this.shoppingList.contains(itemList[i])) {
                     System.out.println("You have " + itemList[i] + " in your cart");
 
                     // if item is new
                     // item must not be a non-character
                 } else if (!itemList[i].isBlank()) {
-                    shoppingList.add(itemList[i]);
+                    this.shoppingList.add(itemList[i]);
                     System.out.println(itemList[i] + " added to cart");
                 }
             }
-        
+            
         } else {
-            System.out.println("Please add items into your cart e.g. add item1, item2...");
+            System.out.println("Add items to your cart e.g. add item1, item2...");
         }    
     } 
 
     // delete function
     public void delete (String input) {
-        
-        if (input.length() > 7 && newShoppingList == false) {
-                
-            // convert string to integer
-            try {
-                Integer index = Integer.parseInt(input.substring(7).trim());
+      
+    if (!loggedIn) {
+            System.out.println("Log in before deleting items from your cart");
+    
+    } else if (input.length() > 7/*  && !newShoppingList */) {
+            
+        // convert string to integer
+        try {
+            Integer index = Integer.parseInt(input.substring(7).trim());
 
-                // if list is empty
-                if (shoppingList.isEmpty()) {
-                    System.out.println("Your cart is empty");
+            // if list is empty
+            if (this.shoppingList.isEmpty()) {
+                System.out.println("Your cart is empty");
 
-                    // if incorrect index provided
-                    // index bigger than list size
-                    // index is less or equal to 0
-                } else if (index > shoppingList.size() || index <= 0) {
-                    System.out.println("Incorrect item index");
+                // if incorrect index provided
+                // index bigger than list size
+                // index is less or equal to 0
+            } else if (index > this.shoppingList.size() || index <= 0) {
+                System.out.println("Incorrect item index");
 
-                    // if correct index provided
-                } else {
-                    System.out.println(shoppingList.get(index - 1) + " removed from cart");
-                    shoppingList.remove(index - 1);
-                }
-
-                // if a non number is placed in, send an error message
-            } catch (NumberFormatException nfe) {
-                System.out.println("Please input the item's index on the shopping list to delete e.g. delete 1");
-                // System.out.println(nfe);
+                // if correct index provided
+            } else {
+                System.out.println(shoppingList.get(index - 1) + " removed from cart");
+                this.shoppingList.remove(index - 1);
             }
-        } else if (newShoppingList) {
-            System.out.println("Your cart is empty");
+
+            // if a non number is placed in, send an error message
+        } catch (NumberFormatException nfe) {
+            System.out.println("Type the item's index on the shopping list to delete e.g. delete 1");
+            // System.out.println(nfe);
+        }
+    /*}  else if (this.newShoppingList) {
+        System.out.println("Your cart is empty"); */
+    } else {
+        System.out.println("Type the item's index on the shopping list to delete e.g. delete 1");
+    }
+    }
+
+    public void save() throws IOException {
+        if (this.loggedIn) {
+
+            // overwrite shopping cart
+            String dirPathFileName = dirPath + File.separator + user + ".txt";
+            FileWriter fw = new FileWriter(dirPathFileName, false);
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            if (this.shoppingList.size() > 0) {
+                for (int i = 0; i < this.shoppingList.size(); i++) {
+                    bw.append(this.shoppingList.get(i) + "\n");
+                }
+            }
+
+            bw.flush();
+            bw.close();
+            fw.close();
+
+            // make sure that you are logged out
+            this.loggedIn = false;
+
+            // clear shopping list
+            this.shoppingList = null;
+            this.newShoppingList = true;
+
+            // log out user
+            this.user = null;
+
+            System.out.println("Your cart has been saved.");
+            System.out.println("You have been logged out. Please log in again if you need to continue adding things into your cart.");
+
         } else {
-            System.out.println("Please input the item's index on the shopping list to delete e.g. delete 1");
+            System.out.println("Log in in first before saving");
         }
     }
 
