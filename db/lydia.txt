@@ -1,4 +1,0 @@
-leaf
-flower
-stem
-bud

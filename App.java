@@ -12,38 +12,25 @@ import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) throws IOException {
-        // directory path
-        String user = null;
-        String dirPath = null;
         
-        if (args.length == 0) {
-            dirPath = "db";
-        } else {
-            dirPath = args[0];
-        }
+        // instantiate shopping cart object
+        ShoppingCartDB shoppingCart = new ShoppingCartDB();
         
-        File directory = new File(dirPath);
-        if (!directory.exists()) {
-            directory.mkdir();
-        }
+        // create directory path at startup
+        shoppingCart.directory(args);
         
         // welcome message
-        System.out.println("Welcome to your shopping cart in the " + dirPath + " directory.");
+        System.out.println("Welcome to your shopping cart in the " + shoppingCart.getDirPath() + " directory.");
         System.out.println("Please type a command. You may type 'help' if you need a list of commands.");
         
         // terminal input
         String input = "";
         Scanner scan = new Scanner(System.in);
 
-        // instantiate shopping cart object
-        ShoppingCartDB shoppingCart = new ShoppingCartDB();
-
-        // !!checkers
-        boolean loggedIn = false;    
 
         // end function
         while (!input.equals("end")) {
-            input = scan.next();
+            input = scan.nextLine();
 
             // help function
             if (input.equals("help")) {
@@ -56,82 +43,9 @@ public class App {
             /*
             // login function
             if (input.equals("login")) {
+                shoppingCart.login(input, user);
+            }
 
-                // create new scanner to scan username
-                // login loop will have a logical error if you do not create a new scanner
-                Scanner userInput = new Scanner(scan.nextLine()); // input after 'login'
-
-                // if a username has been given
-                if (userInput.hasNext()) {
-
-                    // find out user
-                    String username = userInput.nextLine().replaceAll("\\p{P}", " ").trim();
-
-                    // if the same person logs in again
-                    if (username.equals(user)) {
-                        System.out.println("You are already logged in");
-
-                        // if someone logs in with a valid username
-                    } else if (username.matches("^[a-zA-Z0-9]*$")) {
-
-                        // tell system that you are logged in
-                        loggedIn = true;
-
-                        user = username;
-
-                        // instantiate new shopping list
-                        shoppingList = new ArrayList<String>();
-                        newShoppingList = false;
-
-                        // 1. find out if user file exists
-                        String dirPathFileName = dirPath + File.separator + user + ".txt";
-                        File userFile = new File(dirPathFileName);
-
-                        // 2a. if user exists, update the shopping list
-                        if (userFile.exists()) {
-                            System.out.println("Welcome back, " + user);
-
-                            // use file reader to fill up shopping cart list
-                            FileReader fr = new FileReader(userFile);
-                            BufferedReader br = new BufferedReader(fr);
-                            String line = "";
-
-                            while ((line = br.readLine()) != null) {
-                                shoppingList.add(line);
-                            }
-
-                            br.close();
-                            fr.close();
-
-                            // 2b. if the user does not exist
-                        } else {
-                            System.out.println("Nice to meet you, " + user);
-                            userFile.createNewFile();
-                        }
-
-                        // 3. print out shopping list details
-                        // if the size of the shopping list is more than 0
-                        if (shoppingList.size() > 0) {
-                            System.out.println(user + ", your cart contains the following items");
-                            for (int i = 0; i < shoppingList.size(); i++) {
-                                System.out.println((i + 1) + ". " + shoppingList.get(i));
-                            }
-
-                            // if shopping list is empty
-                        } else {
-                            System.out.println(user + ", your cart is empty");
-                        }
-
-                    } else {
-                        System.out.println("Please use a username with alphabets and numbers only e.g. abc123");
-                    }
-                      
-                    // if someone has not logged in, ask to login with username
-                } else {
-                    System.out.println("Please login with your username e.g. login username");
-                }
-            } 
-            
             // save function
             if (input.equals("save")) {
                 if (loggedIn == true) {
@@ -161,6 +75,7 @@ public class App {
                 shoppingCart.list();
             }
 
+            /*
             // add function
             if (input.equals("add")) {
                 Scanner itemInput = new Scanner(System.in);
@@ -170,7 +85,6 @@ public class App {
                 // use add method with items as an argument
                 shoppingCart.add(items);
             }
-            /*
             // delete function
             if (input.equals("delete")) {
 
